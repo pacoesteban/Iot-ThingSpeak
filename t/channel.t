@@ -37,5 +37,6 @@ my $ts = IoT::ThingSpeak->new(
 isa_ok($ts, 'IoT::ThingSpeak');
 isa_ok($ts->view_channel, 'IoT::ThingSpeak::Channel');
 like( $ts->view_channel->name, qr/My New Channel/, 'public channels test' );
+is($ts->view_channel->created_at->year, 2014, 'test DT on created_at field');
 
 done_testing;

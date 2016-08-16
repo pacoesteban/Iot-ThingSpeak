@@ -6,6 +6,7 @@ use 5.008_005;
 use Carp;
 use Moose;
 use DateTime;
+use DateTime::Format::ISO8601;
 
 has [qw( name username)] => (
     is  => 'ro',
@@ -28,13 +29,13 @@ has [qw(last_entry_id ranking)] => (
 );
 
 has created_at => (
-    is => 'ro',
-
-    # isa     => 'DateTime',
+    is      => 'ro',
+    isa     => 'DateTime',
 );
 
 has tags => (
     is => 'ro',
+
     # isa     => 'Array',
 );
 

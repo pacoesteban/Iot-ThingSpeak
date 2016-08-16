@@ -33,8 +33,10 @@ sub view_channel {
     my $res =
       $self->_ua->get( $BASEURL . "/channels/" . $self->channel_id . ".json" );
     if ( $res->is_success ) {
-        return IoT::ThingSpeak::Channel->new(
-            %{ decode_json $res->decoded_content } );
+        my $temp = decode_json $res->decoded_content;
+        $temp->{created_at} =
+          DateTime::Format::ISO8601->parse_datetime( $temp->{created_at} );
+        return IoT::ThingSpeak::Channel->new( %{$temp} );
     }
     return undef;
 }
