@@ -3,6 +3,7 @@ use Test::More;
 use Test::LWP::UserAgent;
 use IoT::ThingSpeak;
 use IoT::ThingSpeak::Channel;
+use Data::Dumper;
 
 my $test_ua = Test::LWP::UserAgent->new;
 $test_ua->map_response(
@@ -23,7 +24,17 @@ $test_ua->map_response(
           "last_entry_id": null,
           "ranking": 15,
           "username": "hans",
-          "tags": []
+          "tags": 
+            [
+                {
+                  "id": 9,
+                  "name": "temp"
+                },
+                {
+                  "id": 25,
+                  "name": "light"
+                }
+            ]
         }'
     ),
 );
@@ -38,5 +49,6 @@ isa_ok($ts, 'IoT::ThingSpeak');
 isa_ok($ts->view_channel, 'IoT::ThingSpeak::Channel');
 like( $ts->view_channel->name, qr/My New Channel/, 'public channels test' );
 is($ts->view_channel->created_at->year, 2014, 'test DT on created_at field');
+isa_ok($ts->view_channel->tags, 'ARRAY');
 
 done_testing;
