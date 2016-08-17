@@ -29,8 +29,8 @@ has [qw(last_entry_id ranking)] => (
 );
 
 has created_at => (
-    is      => 'ro',
-    isa     => 'DateTime',
+    is  => 'ro',
+    isa => 'DateTime',
 );
 
 has tags => (
@@ -38,6 +38,13 @@ has tags => (
 
     # isa     => 'Array',
 );
+
+around BUILDARGS => sub {
+    my ( $orig, $class, %args ) = @_;
+    $args{created_at} =
+      DateTime::Format::ISO8601->parse_datetime( $args{created_at} );
+    return $class->$orig(%args);
+};
 
 no Moose;
 __PACKAGE__->meta->make_immutable;
