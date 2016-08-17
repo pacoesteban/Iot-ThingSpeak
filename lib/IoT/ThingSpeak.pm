@@ -39,6 +39,22 @@ sub view_channel {
     return undef;
 }
 
+sub get_feed {
+    my $self = shift;
+    my @feeds;
+    my $res =
+      $self->_ua->get(
+        $BASEURL . "/channels/" . $self->channel_id . "/feeds.json" );
+    if ( $res->is_success ) {
+        my $rawJson = decode_json $res->decoded_content;
+        foreach my $f ( @{ $rawJson->{feeds} } ) {
+            push @feeds, IoT::ThingSpeak::Channel::Feed->new( %{$f} );
+        }
+        return \@feeds;
+    }
+    return undef;
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 

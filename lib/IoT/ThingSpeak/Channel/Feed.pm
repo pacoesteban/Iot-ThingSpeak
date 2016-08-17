@@ -1,4 +1,4 @@
-package IoT::ThingSpeak::Channel;
+package IoT::ThingSpeak::Channel::Feed;
 
 use strict;
 use warnings;
@@ -8,33 +8,21 @@ use Moose;
 use DateTime;
 use DateTime::Format::ISO8601;
 
-has [qw( name username)] => (
-    is  => 'ro',
-    isa => 'Str',
-);
-
-has [qw( description metadata latitude longitude elevation )] => (
-    is  => 'ro',
-    isa => 'Maybe[Str]',
-);
-
-has id => (
+has entry_id => (
     is  => 'ro',
     isa => 'Int',
 );
 
-has [qw(last_entry_id ranking)] => (
-    is  => 'ro',
-    isa => 'Maybe[Int]',
-);
+foreach my $f (1..8) {
+    has "field$f" => (
+        is  => 'ro',
+        isa => 'Maybe[Num]',
+    );
+}
 
 has created_at => (
     is  => 'ro',
     isa => 'DateTime',
-);
-
-has tags => (
-    is  => 'ro',
 );
 
 around BUILDARGS => sub {
